@@ -162,4 +162,7 @@ merged <- merge(merged, totalpre1960)
 
 # TO-DO
 # > Fix HS Educational Attainment
+#     > UPDATE (11:59PM) While in bed, I realized why education might not be working. Because I am dividing HS Education
+#       to the WHOLE population and not just those over 25. However, I did try and find a variable that included a
+#       population of only those over 25 but coudn't find anything. A task that shall be continued tomorrow.
 # > Some percent poverty is 0.0, so would like to figure out if nobody answered the survey there or what..
