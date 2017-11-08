@@ -162,3 +162,4 @@ merged <- merge(merged, totalpre1960)
 
 # TO-DO
 # > Fix HS Educational Attainment
+# > Some percent poverty is 0.0, so would like to figure out if nobody answered the survey there or what..
