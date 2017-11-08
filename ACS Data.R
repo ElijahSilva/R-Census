@@ -8,15 +8,15 @@ library(dplyr)
 ######################
 # LOAD ACS VARIABLES #
 ######################
-v15 <- load_variables(2015, "acs5", cache=TRUE) # view all the ACS variables to extrapolate the census data
+v15 <- load_variables(2015, "acs5", cache=TRUE) # view all variables
 
 ################
 # GET ACS DATA #
 ################
 medincome <- get_acs(geography="tract", variables = "B19013A_001E",year=2015,output="tidy", state="IN", county=141)
-highschool <- get_acs(geography="tract", variables = "B15003_017E",year=2015,output="tidy", state="IN", county=141)
+highschool <- get_acs(geography="tract", variables = "B06009_003E",year=2015,output="tidy", state="IN", county=141)
 totalpop <- get_acs(geography="tract", variables = "B01003_001E",year=2015,output="tidy", state="IN", county=141)
-houserent <- get_acs(geography="tract", variables = "B07013PR_003E",year=2015,output="tidy", state="IN", county=141)
+houserent <- get_acs(geography="tract", variables = "B07013_003E",year=2015,output="tidy", state="IN", county=141)
 housebuilt <- get_acs(geography="tract", variables = "B25035_001E",year=2015,output="tidy", state="IN", county=141)
 blackpop <- get_acs(geography="tract", variables = "B02001_003E",year=2015,output="tidy", state="IN", county=141)
 hisppop <- get_acs(geography="tract", variables = "B03001_003E",year=2015,output="tidy", state="IN", county=141)
@@ -86,9 +86,10 @@ totalpre1960$`Number of Pre-1939 Housing` <- NULL
 totalpre1960$`Number of 1940-1949 Housing` <- NULL
 totalpre1960$`Number of 1950-1959 Housing` <- NULL
 
-#################################
-# CONVERT TOTALS TO PERCENTAGES #
-#################################
+#####################################
+# CONVERT ALL TOTALS TO PERCENTAGES #
+#####################################
+###########################
 # 1960 HOUSING PERCENTAGE #
 ###########################
 Percent1960 <- round(totalpre1960$total1960 / totalhouseyear$`Total Number of Houses` * 100, digits = 1)
@@ -101,6 +102,14 @@ totalpre1960$'total1960' <- NULL # remove the total and only have percentage
 Percent1950 <- round(totalpre1950$total1950 / totalhouseyear$`Total Number of Houses` * 100, digits = 1)
 totalpre1950 <- cbind(totalpre1950, Percent1950)
 totalpre1950$'total1950'<-NULL
+
+################
+# HOUSING RENT #
+################
+PercentRent <- round(houserent$'Householder Lived in Renter-Occupied Housing Units' / totalpop$`Total Population` * 100, digits = 1)
+PercRent <- cbind(houserent, PercentRent) #Make a new value for percentage black NEXT TIME!!
+PercRent$'Householder Lived in Renter-Occupied Housing Units'<-NULL
+
 
 ###############################
 # BLACK POPULATION PERCENTAGE #
@@ -126,26 +135,26 @@ PercHispanic$'Hispanic Population'<-NULL
 ######################
 # POVERTY PERCENTAGE #
 ######################
-PercPoverty <- round(poverty$'Number of Households Below the Poverty Line' / totalpop$`Total Population` * 100, digits = 1)
-PercPoverty <- cbind(poverty, PercPoverty)
+PercentPoverty <- round(poverty$'Number of Households Below the Poverty Line' / totalpop$`Total Population` * 100, digits = 1)
+PercPoverty <- cbind(poverty, PercentPoverty)
 PercPoverty$'Number of Households Below the Poverty Line'<-NULL
-  
+
 ##################
 # MERGE ALL DATA #
 ##################
-merged <- merge(PercHispanic,PercBlack) 
+merged <- merge(PercHispanic, PercBlack) 
 merged <- merge(merged, PercHS)
-merged <- merge(merged,PercPoverty)
+merged <- merge(merged, PercPoverty)
+merged <- merge(merged, PercRent)
 merged <- merge(merged, medincome)
 merged <- merge(merged, housebuilt)
 merged <- merge(merged, totalpre1950)
 merged <- merge(merged, totalpre1960)
 
-# Dr. Sisk, to look at the final graph you look for "merged" in the data environment. My data for renter-
-# -occupied housing came back NA. You can see that by looking at the 'houserent' data. Also, HS seems to be a bit
+# Dr. Sisk, to look at the final graph, go into the data and look for "merged". HS seems to be a bit
 # low and I'm wondering if that only includes people who ONLY received a HS diploma. That would make more
-# sense as I believe I got the right variable table from ACS. 
-# Please let me know if you have any questions about the coding.
+# sense as I believe I got the right variable table from ACS. Please let me know if you have any questions
+# about the coding. Also, I fixed the NA's in Renter-Occupied. I didn't have the right variable.
 
 # WAYS TO IMPROVE MY CODING
 # > Find a way to delete (NULL) columns (2+ more efficiently)
@@ -153,4 +162,3 @@ merged <- merge(merged, totalpre1960)
 
 # TO-DO
 # > Fix HS Educational Attainment
-# > Find Proper Renter-Occupied Data for St. Joseph County
