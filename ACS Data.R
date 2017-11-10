@@ -42,13 +42,13 @@ Fpoverty <- transmute(poverty, GEOID, NAME, 'Poverty' = round(estimate/totalpop$
 ######################
 # CREATE FINAL TABLE #
 ######################
-final <- transmute(blackpop, GEOID, NAME, 'Black Population' = Fblackpop$'Black',
-                   'Hispanic Population' = Fhisppop$'Hispanic',
-                   'High School Attainment Population' = Fhighschool$'HS',
-                   'Percent Renter-Occupied Housing' = Fhouserent$'Rent',
-                   'Percentage of House Built Before 1950' = Fhouse50_$'1950',
-                   'Percentage of House Built Before 1960' = Fhouse60_$'1960',
-                   'Median Income' = Fmedincome$'Income',
+final <- transmute(blackpop, GEOID, NAME, 'Percentage of the Black Population' = Fblackpop$'Black',
+                   'Percentage of the Hispanic Population' = Fhisppop$'Hispanic',
+                   'Percentage with a High School Diploma' = Fhighschool$'HS',
+                   'Percent Living in Renter-Occupied Housing' = Fhouserent$'Rent',
+                   'Percentage of Houses Built Before 1950' = Fhouse50_$'1950',
+                   'Percentage of Houses Built Before 1960' = Fhouse60_$'1960',
+                   'Median Income of Households' = Fmedincome$'Income',
                    'Median Year House was Built' = Fhousebuilt$'YearBuilt',
                    'Percentage Below Poverty Line' = Fpoverty$'Poverty'
 )
