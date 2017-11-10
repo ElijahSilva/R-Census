@@ -27,7 +27,7 @@ house40_49<- get_acs(geography="tract", variables = "B25034_010E",year=2015,outp
 house39_ <- get_acs(geography="tract", variables = "B25034_011E",year=2015,output="tidy", state="IN", county=141)
 
 ####################################################
-# REMOVE MOE & VARIABLE AND CONVERT TO PERCENTAGES #
+# REMOVE MOE & VARIABLE AND CONVERT TO PERCENTAGES # (ALL IN ONE STEP!!!!)
 ####################################################
 Fblackpop <- transmute(blackpop, GEOID, NAME, 'Black' = round(estimate/totalpop$estimate,3)*100)
 Fhisppop <- transmute(hisppop, GEOID, NAME, 'Hispanic' = round(estimate/totalpop$estimate,3)*100)
